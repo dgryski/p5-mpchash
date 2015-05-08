@@ -35,7 +35,6 @@ sub hash {
     my $min_distance = ~0;
     my $midx = 0;
 
-    my $i = 0;
     for my $seed (@{$self->{seeds}}) {
         my $h = siphash64($key, $seed);
         my $idx = binsearch_pos { $a <=> $b } $h, @{$self->{bhashes}};
@@ -51,7 +50,6 @@ sub hash {
             $min_distance = $d;
             $midx = $idx;
         }
-        $i++;
     }
 
     return $self->{bmap}->{$self->{bhashes}->[$midx]};
