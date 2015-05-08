@@ -6,6 +6,8 @@ use strict;
 use Digest::SipHash qw/siphash64/;
 use List::BinarySearch qw/binsearch_pos/;
 
+use constant zero_seed => pack ("C16", 0);
+
 sub new {
     my $class = shift;
     my ($buckets, $seeds) = @_;
@@ -18,7 +20,7 @@ sub new {
     }, $class;
 
     for my $bucket (@{$self->{buckets}}) {
-        my $h = siphash64($bucket, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");
+        my $h = siphash64($bucket, zero_seed);
         push @{$self->{bhashes}}, $h;
         $self->{bmap}->{$h} = $bucket;
     }
